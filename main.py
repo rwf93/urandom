@@ -26,20 +26,22 @@ class URandom(discord.Bot):
         print("Screaming into VC...")
 
 bot = URandom()
-
-connection = None
+connections = None
 
 @bot.slash_command()
 async def urandom(ctx: discord.ApplicationContext):
     await ctx.respond(str(os.urandom(100).decode('latin1')))
     voice = ctx.author.voice
-
-    #hnggg
-
     if not voice:
-        await ctx.respond(f"You need to join a channel, you {str(os.urandom(5).decode('latin1'))}")
+        await ctx.respond(f"You need to join a channel, you {str(os.urandom(5).decode('latin1'))}")        
 
-    vc = await voice.channel.connect()  
+    if connections:
+        connections.disconnect()
+        connections = None
+
+    vc = await voice.channel.connect()
+    connections = vc
+
     vc.play(discord.FFmpegOpusAudio("/dev/urandom", before_options="-f s16le", options="-map 0", codec="copy", bitrate=150))
 
 bot.run(os.getenv("BOT_TOKEN"))
