@@ -34,6 +34,8 @@ async def urandom(ctx: discord.ApplicationContext):
     await ctx.respond(str(os.urandom(100).decode('latin1')))
     voice = ctx.author.voice
 
+    #hnggg
+
     if not voice:
         await ctx.respond(f"You need to join a channel, you {str(os.urandom(5).decode('latin1'))}")
 
